@@ -1,0 +1,107 @@
+/* styles.css */
+
+/* Основні стилі */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Змінено на flex-start, щоб елементи були зверху */
+    height: auto; /* Дозволяємо height автоматично підлаштовуватись */
+    padding: 20px; /* Додаємо відступ для простору */
+    margin: 0;
+}
+
+/* Контейнер */
+.container {
+    width: 100%;
+    max-width: 600px; /* Збільшена максимальна ширина контейнера */
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Заголовок */
+h3 {
+    text-align: center;
+    color: #4CAF50;
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+/* Поля вводу */
+label {
+    font-weight: bold;
+    color: #666;
+    display: block;
+    margin-top: 15px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Стилізація для мультиселекту */
+.select-offices {
+    height: 150px; /* Висота мультиселекту */
+    overflow-y: auto; /* Прокрутка для перегляду */
+}
+
+/* Стилі для опцій */
+.select-offices option {
+    padding: 10px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* При наведенні на опцію */
+.select-offices option:hover {
+    background-color: #e0e0e0;
+}
+
+/* Стилі для активних опцій */
+.select-offices option:checked {
+    background-color: #4CAF50; /* Зелений фон для вибраних опцій */
+    color: white; /* Білий текст для вибраних опцій */
+}
+
+/* Кнопка */
+button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: #ffffff;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Виведення результату */
+.log-output {
+    background: #f7f7f7;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    color: #333;
+    white-space: pre-wrap;
+}

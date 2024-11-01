@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Перевірка офісів</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Підключення CSS-файлу -->
+</head>
+<body>
+<div class="container">
+    <h3>Перевірка офісу</h3>
+    <label>Дата (YYYY-MM-DD):</label>
+    <input type="text" id="date" placeholder="2024-11-01" required>
+
+    <label>Cookie:</label>
+    <input type="text" id="cookie" placeholder="Введіть куки" required>
+
+    <label>Офіси:</label>
+    <select id="offices" class="select-offices" multiple required>
+        <!-- Тут будуть додані опції через JavaScript -->
+    </select>
+
+    <label>Частота запиту:</label>
+    <select id="frequency" required>
+        <option value="">Оберіть частоту</option>
+        <option value="30000">30 секунд</option>
+        <option value="60000">1 хвилина</option>
+        <option value="300000">5 хвилин</option>
+    </select>
+
+    <button onclick="runCheck()">Запустити</button>
+
+    <!-- Блок для логування результатів -->
+    <div class="log-output" id="log-output"></div>
+</div>
+
+<script>
+    const { ipcRenderer } = require('electron');
+    let intervalId;
+    let officesList = []; // Ініціалізуємо officesList тут
+
+    function runCheck() {
+        const date = document.getElementById('date').value;
+        const cookie = document.getElementById('cookie').value;
+        const offices = Array.from(document.getElementById('offices').selectedOptions).map(option => option.value);
+        const frequency = parseInt(document.getElementById('frequency').value);
+
+        // Перевірка на обов'язкові поля
+        if (!date || !cookie || offices.length === 0 || !frequency) {
+            alert('Будь ласка, заповніть всі обов\'язкові поля.');
+            return;
+        }
+
+        // Запускаємо перший запит і встановлюємо інтервал для повторних
+        clearInterval(intervalId);
+        makeRequest(date, cookie, offices); // Початковий запит
+        intervalId = setInterval(() => makeRequest(date, cookie, offices), frequency);
+    }
+
+    function makeRequest(date, cookie, offices) {
+        ipcRenderer.send('run-check', { date, cookie, offices });
+    }
+
+    ipcRenderer.on('script-output', (event, data) => {
+        logMessage(data);
+    });
+
+    ipcRenderer.on('play-sound', () => {
+        const audio = new Audio('./Glass.aiff');
+        audio.play();
+    });
+
+    // Функція для додавання повідомлення в лог
+    function logMessage(message) {
+        const logOutput = document.getElementById('log-output');
+        logOutput.innerText += `${message}\n\n`; // Додаємо новий результат в кінець
+        logOutput.scrollTop = logOutput.scrollHeight; // Прокрутка до останнього запису
+    }
+
+    // Додаємо функцію для заповнення селекту офісами
+    function populateOffices(offices) {
+        const officesSelect = document.getElementById('offices');
+        offices.forEach(office => {
+            const option = document.createElement('option');
+            option.value = office.id_offices; // Значення буде id_offices
+            option.textContent = `${office.offices_name} - ${office.offices_addr}`; // Показуємо назву і адресу
+            officesSelect.appendChild(option);
+        });
+    }
+
+    // Запит на отримання офісів при завантаженні
+    window.onload = () => {
+        ipcRenderer.send('request-offices'); // Запит на офіси
+    };
+
+    // Отримання списку офісів
+    ipcRenderer.on('send-offices', (event, offices) => {
+        officesList = offices; // Зберігаємо список офісів
+        populateOffices(officesList); // Заповнюємо селект
+    });
+</script>
+</body>
+</html>
