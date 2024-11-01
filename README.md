@@ -30,12 +30,15 @@
     npm start
     ```
 5.	Для збірки застосунку використовуйте команду:
-      •	Для Windows:
-         ```bash
-         npm run build:win
-         ```
-        •	Для MacOS:
-         ```bash
-        npm run build:mac
-         ```
-      Зібрані файли будуть збережені в директорії dist.
+  •	Для Windows:
+
+     ```bash
+    npm run build:win
+     ```
+    •	Для MacOS:
+     ```bash
+    npm run build:mac
+     ```
+  Зібрані файли будуть збережені в директорії dist.
+  
+збірка на вінду тимчасово не працює
